@@ -28,7 +28,7 @@ public:
 
 如图：
 
-![]()
+![](https://github.com/scottkaykay/practice-codes/blob/master/screenshots/bingchaji.png)
 
 判断这种「等价关系」非常实用，比如说编译器判断同一个变量的不同引用，比如社交网络中的朋友圈计算等等。
 
