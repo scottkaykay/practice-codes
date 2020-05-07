@@ -42,26 +42,26 @@ public:
 ```C++
 class UF{
 public:
-    UF(int n)
+    UF(int n)  //构造函数初始化
     {
         this->count=n;
         parent=new int[n];
         size=new int[n];
         for(int i=0;i<n;i++)
         {
-            parent[i]=i;
-            size[i]=1;
+            parent[i]=i;  // 每个结点初始的父节点都是它自己
+            size[i]=1;    // 每个结点起初互不连通，所以节点数量就1个
         }
         
     }
     
-    void union(int p,int q)
+    void union(int p,int q)  //连通函数
     {
-        int rootp=find(p);
+        int rootp=find(p);  //向上遍历找到根结点
         int rooq=find(q);
-        if(rootp==rootq)
+        if(rootp==rootq)   //根结点相同说明他们属于同一棵树，直接返回
             return;
-        if(size[rootp]>size[rooq])
+        if(size[rootp]>size[rooq])  //为了树的平衡性考虑，小的树往大的树上连，比较一下两个树的节点数量判断一下
         {
             parent[rooq]=rootp;
             size[rootp]+=size[rootq];
@@ -71,15 +71,15 @@ public:
             parent[rootp]=rootq;
             size[rootq]+=size[rootp];
         }
-        count--;
+        count--;     //连通后，连通分量减1
     }
-    bool connect(int p,int q)
+    bool connect(int p,int q)  //判断两点是否连通，看看两点的根结点是否一样就行
     {
         if(find(p)==find(q))
             return true;
         return false;
     }
-    int count()
+    int count()  //返回连通分量的个数
     {
         return count;
     }
@@ -88,11 +88,11 @@ private:
     int parent[]; //记录节点父节点
     int size[]; //记录树的节点个数
     
-    int find(int x)
+    int find(int x)  //向上遍历寻找根结点
     {
         while(parent[x]!=x)
         {
-            parent[x]=parent[parent[x]];
+            parent[x]=parent[parent[x]];  //路径压缩
             x=parent[x];
         }
         return x;
