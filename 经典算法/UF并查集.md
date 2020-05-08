@@ -55,7 +55,7 @@ public:
         
     }
     
-    void union(int p,int q)  //连通函数
+    void unionmerge(int p,int q)  //连通函数
     {
         int rootp=find(p);  //向上遍历找到根结点
         int rooq=find(q);
@@ -79,7 +79,7 @@ public:
             return true;
         return false;
     }
-    int count()  //返回连通分量的个数
+    int counts()  //返回连通分量的个数
     {
         return count;
     }
@@ -111,9 +111,9 @@ int findCircleNum(int[][] M)
         for(int j=0;j<i;j++)
         {
             if(M[i][j]==1)
-                uf.union(i,j);
+                uf.unionmerge(i,j);
         }
     }
-    return uf.count();
+    return uf.counts();
 }
 ```
