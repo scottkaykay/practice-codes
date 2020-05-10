@@ -1,0 +1,64 @@
+# 863 二叉树中所有距离为K的结点
+
+## 题目描述
+
+给定一个二叉树（具有根结点 root）， 一个目标结点 target ，和一个整数值 K 。
+
+返回到目标结点 target 距离为 K 的所有结点的值的列表。 答案可以以任何顺序返回
+
+输入：root = [3,5,1,6,2,0,8,null,null,7,4], target = 5, K = 2
+
+输出：[7,4,1]
+
+解释：\
+所求结点为与目标结点（值为 5）距离为 2 的结点，\
+值分别为 7，4，以及 1
+
+![]()
+
+注意，输入的 "root" 和 "target" 实际上是树上的结点。\
+上面的输入仅仅是对这些对象进行了序列化描述。
+
+## 思路
+
+1. 定位目标节点，将树中每个结点所相邻的点全部找出
+2. 根据K值寻找对应的节点
+
+## 代码
+
+```Python
+class Solution:
+    def distanceK(self,root,target,K): #注意target是树节点
+        self.store={}
+        def dfs(root,last): #last用于记录父节点
+            if root==None:
+                return
+            if root.val not in self.store:
+                self.store[root.val]=[]
+            if last!=-1:
+                self.store[root.val].append(last)
+            last=root.val
+            if root.left:
+                self.store[root.val].append(root.left.val)
+            if root.right:
+                self.store[root.val].append(root.right.val)
+            dfs(root.left,last)
+            dfs(root.right,last)
+        dfs(root,-1)
+        self.res=[]
+        def find(store,i,visited,K):
+            if visited[i]:
+                return
+            if K==0:
+                self.res.append(i)
+                return
+            visited[i]=True
+            K-=1
+            for j in store[i]:
+                find(store,j,visited,,,K)
+            K+=1
+            visited[i]=False
+        visited=[False]*(max(self.store.keys())+1)
+        find(self.store,target.val,visited,K)
+        return self.res
+```
