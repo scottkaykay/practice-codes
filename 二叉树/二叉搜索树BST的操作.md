@@ -61,7 +61,7 @@ bool isinBST(TreeNode* root,int target)
     if(root->val<target)
         return isinBST(root->right,target);
     if(root->val>target)
-        return isin BST(root->left,target);
+        return isinBST(root->left,target);
 }
 ```
 
@@ -70,8 +70,55 @@ bool isinBST(TreeNode* root,int target)
 ```C++
 TreeNode* insertintoBST(TreeNode* root,int val)
 {
-    
-
+    if(root==NULL)
+        return new TreeNode(val);
+    if(root->val<val)
+        root->right=insertintoBST(root->right,val);
+    if(root->val>val)
+        root->left=insertintoBST(root->left,val);
+    return root;
 }
 
+```
+
+## 在BST中删除一个数
+
+```C++
+TreeNode* deleteNode(TreeNode* root,int key)
+{
+    if(root==NULL)
+        return NULL;
+    if(root->val<key)
+        root->right=deleteNode(root->right,key);
+    else if(root->val<key)
+        root->left=deleteNode(root->left,key);
+    else if(root->val==key)
+    {
+        if(root->left==NULL)
+            return root->right;
+        if(root->right==NULL)
+            return root->left;
+        TreeNode* minnode=getMin(root->right);
+        //root->val=minnode->val;
+        //root->right=deleteNode(root->right,minnode->val);
+        minnode->left=root->left;
+        minnode->right=deletemin(root->right);
+        return minnode;
+    }
+    return root;
+}
+TreeNode* getMin(TreeNode* root)
+{
+    while(root->left!=NULL)
+        root=root->left;
+    return root;
+}
+TreeNode* deletemin(TreeNode* root)
+{
+    if(root->left==NULL)
+        return root->right;
+        
+    root->left=deletemin(root->left);
+    return root;
+}
 ```
