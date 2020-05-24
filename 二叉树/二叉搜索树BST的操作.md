@@ -101,8 +101,9 @@ TreeNode* deleteNode(TreeNode* root,int key)
         TreeNode* minnode=getMin(root->right);
         //root->val=minnode->val;
         //root->right=deleteNode(root->right,minnode->val);
-        minnode->left=root->left;
+        
         minnode->right=deletemin(root->right);
+        minnode->left=root->left;
         return minnode;
     }
     return root;
