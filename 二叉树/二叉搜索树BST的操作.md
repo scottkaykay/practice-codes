@@ -102,7 +102,7 @@ TreeNode* deleteNode(TreeNode* root,int key)
         //root->val=minnode->val;
         //root->right=deleteNode(root->right,minnode->val);
         
-        minnode->right=deletemin(root->right);
+        minnode->right=deletemin(root->right);//注意：如果minnode->left放在前面，相当于提前给minode安排了左孩子，minnode->left此时不等于NULL,这就会导致后面deletemin里面判断root->left==NULL出错
         minnode->left=root->left;
         return minnode;
     }
