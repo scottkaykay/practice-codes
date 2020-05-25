@@ -1,4 +1,4 @@
-# 并查集算法
+# 并查集算法 适用于发现无向图是否有环，拓补排序可发现有向图的环
 
 ## 实现的功能
 
@@ -85,8 +85,8 @@ public:
     }
 private:
     int count;   //记录连通分量的个数
-    int parent[]; //记录节点父节点
-    int size[]; //记录树的节点个数
+    int *parent; //记录节点父节点
+    int *size; //记录树的节点个数
     
     int find(int x)  //向上遍历寻找根结点
     {
@@ -116,4 +116,96 @@ int findCircleNum(int[][] M)
     }
     return uf.counts();
 }
+```
+684 冗余连接（无向图）
+
+在本问题中, 树指的是一个连通且无环的无向图。
+
+输入一个图，该图由一个有着N个节点 (节点值不重复1, 2, ..., N) 的树及一条附加的边构成。附加的边的两个顶点包含在1到N中间，这条附加的边不属于树中已存在的边。
+
+结果图是一个以边组成的二维数组。每一个边的元素是一对[u, v] ，满足 u < v，表示连接顶点u 和v的无向图的边。
+
+返回一条可以删去的边，使得结果图是一个有着N个节点的树。如果有多个答案，则返回二维数组中最后出现的边。答案边 [u, v] 应满足相同的格式 u < v。
+
+输入: [[1,2], [1,3], [2,3]]\
+输出: [2,3]\
+解释: 给定的无向图为:\
+  1
+ / \
+2 - 3
+
+输入: [[1,2], [2,3], [3,4], [1,4], [1,5]]\
+输出: [1,4]\
+解释: 给定的无向图为:
+
+5 - 1 - 2
+    |   |
+    4 - 3
+
+
+```C++
+class Solution{
+public:
+    vector<int> p;
+    int find(int x)
+    {
+        while(x!=p[x])
+        {
+            p[x]=p[p[x]]; //即把 x 的父节点变为x的爷爷节点,路径压缩
+            x=p[x];
+        }
+        return x;
+    
+    }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges)
+    {
+        for(int i=0;i<edges.size()+1;i++)
+        {
+            p.push_back(i);
+        }
+        for(auto val:edges)
+        {
+            int u=find(val[0]);
+            int v=find(val[1]);
+            if(u!=v)
+                p[v]=u;
+            else
+                return val;
+        }
+        return {}:
+    }
+};
+
+//使用拓补排序
+class Solution:
+    def findRedundantConnection(self, edges):
+        import collections
+        #准备两个列表，一个记录每个节点的度，一个记录每个节点的邻接点
+        degree=collections.defaultdict(set)
+        neighbors=collections.defaultdict(int)
+        for s,t in edges:
+            neighbors[s].add(t)
+            neighbors[t].add(s)#因为是无向图，所以两边都得记录
+            degree[s]+=1
+            degree[t]+=1
+        degones=[k for k,v in degree.items() if v==1]#取出度为1的节点
+        while degones:
+            ndegones=[] #保存经过一次拓补排序后度为1的节点
+            for s in degones:
+                deletes=set()
+                for t in neigbors[s]:
+                    degree[t]-=1
+                    if degree[t]==1:
+                        ndegones.append(t)# 如果该点度为1了，那么保存在ndegones列表
+                    deletes.add(t)
+                for t in deletes:
+                    neigbors[t].remove(s)#将要删除的点从图中移除
+                del degree[s]
+                del neighbors[s]
+            degones=ndegones # 更新degOnes为最新一轮的度为1的节点集合
+        for s,t in edges[::-1]: #edges的反向列表
+            if min(degree[s],degree[t])>1:
+                return [s,t]
+        return []
+
 ```
