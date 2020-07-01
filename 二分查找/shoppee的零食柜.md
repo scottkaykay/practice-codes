@@ -19,13 +19,13 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int timecheck(vector<int>& times,int step)
+int timecheck(vector<int>& times,int step)//step为1分钟跑的距离
 {
     int sum=0;
-    int time=1;
+    int time=1;//这个1分钟是留给最后一分钟的
     for(int i:times)
     {
-        if(sum+i>step)
+        if(sum+i>step)//大于step,说明已经跑完step,time加1，开始新的1分钟
         {
             sum=i;
             time++;
@@ -48,16 +48,16 @@ int main()
     for(int i=0;i<n;i++)
     {
         cin>>store[i];
-        maxvalue=max(maxvalue,store[i]);
-        sum+=store[i];
+        maxvalue=max(maxvalue,store[i]);//最大值
+        sum+=store[i]; //累积和
     }
     while(maxvalue<sum)
     {
         step=maxvalue+(sum-maxvalue)/2;
         time=timecheck(store,step);
-        if(time>m)
+        if(time>m)//每分钟设置的步数少了，需要往上加
             maxvalue=step+1;
-        else if(time<m)
+        else if(time<m)//每分钟设置的步数多了
             sum=step-1;
         else
             sum=step;
